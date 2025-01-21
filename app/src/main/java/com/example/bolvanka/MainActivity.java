@@ -1,28 +1,26 @@
 package com.example.bolvanka;
 
-import android.os.Bundle;
-import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.Toast;
-
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
+import android.os.Bundle;
+import java.util.ArrayList;
+import java.util.List;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-
     RecyclerView recyclerView;
-    ProductAdapter adapter;
     ConstraintLayout btn_backet;
-    LinearLayout btn_open_menu;
+    ItemAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,44 +29,47 @@ public class MainActivity extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.recycler_view_list_prod);
         btn_backet = findViewById(R.id.btn_backet);
-        btn_open_menu = findViewById(R.id.btn_open_menu);
 
+        if (recyclerView != null) {
+            recyclerView.setLayoutManager(new LinearLayoutManager(this));
+            List<ItemModel> items = new ArrayList<>();
+            items.add(new ItemModel("tortic", 0, R.drawable.image1));
+            items.add(new ItemModel("ecler", 0, R.drawable.image2));
+            items.add(new ItemModel("morojenoe", 0, R.drawable.image3));
+
+            adapter = new ItemAdapter(items);
+            recyclerView.setAdapter(adapter);
+        }
         btn_backet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(MainActivity.this, "Ещё не сделал", Toast.LENGTH_SHORT).show();
+                showBacketInfo();
             }
         });
-
-        btn_open_menu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(MainActivity.this, "Ещё не сделал", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        // 2. Создаём список продуктов (можете заполнять его динамически или из другого источника)
-        List<ProductAdapter.Product> productList = createProductList();
-
-        // 3. Создаём адаптер и передаем контекст и список продуктов
-        adapter = new ProductAdapter(this, productList);
-
-        // 4. Устанавливаем адаптер на RecyclerView
-        recyclerView.setAdapter(adapter);
-
-        // 5. Устанавливаем LayoutManager (обязательно!)
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
     }
 
-    // Метод для создания списка продуктов (замените на свои данные)
-    private List<ProductAdapter.Product> createProductList() {
-        List<ProductAdapter.Product> productList = new ArrayList<>();
-        productList.add(new ProductAdapter.Product("Тортик", R.drawable.image1));
-        productList.add(new ProductAdapter.Product("ЭклЭр", R.drawable.image2));
-        productList.add(new ProductAdapter.Product("Мржне", R.drawable.image3));
-        // Добавьте другие элементы сюда
+    private void showBacketInfo() {
+        if (adapter == null) {
+            Toast.makeText(this, "Корзина пуста", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        List<ItemModel> items = adapter.getItems();
+        if (items.isEmpty()) {
+            Toast.makeText(this, "Корзина пуста", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
-        return productList;
+        StringBuilder backetInfo = new StringBuilder();
+        for (ItemModel item : items) {
+            if(item.getCounter() > 0){
+                backetInfo.append(item.getName()).append(": ").append(item.getCounter()).append(", ");
+            }
+        }
+        if (backetInfo.length() > 0) {
+            backetInfo.setLength(backetInfo.length() - 2); // Удаляем последнюю запятую и пробел
+            Toast.makeText(this, backetInfo.toString(), Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(this, "Корзина пуста", Toast.LENGTH_SHORT).show();
+        }
     }
 }
