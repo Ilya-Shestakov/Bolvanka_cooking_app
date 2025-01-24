@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "841231869591",
+    "firebase_url": "https://bolvanka-6da54-default-rtdb.firebaseio.com",
+    "project_id": "bolvanka-6da54",
+    "storage_bucket": "bolvanka-6da54.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:841231869591:android:ebcd61b9e7d8efbb666bd2",
+        "android_client_info": {
+          "package_name": "com.example.bolvanka"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDerEQVzOeNPzONVvqmQGa07E4HI4cBIOk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
